@@ -106,7 +106,11 @@ export default function MasterDataPage({ title, data, setData, user, searchValue
     const missing = required.find((field) => !String(form[field.name] ?? '').trim());
     if (missing) { setFormError(`${missing.label} is required.`); return; }
     if (title === 'Products' && Number(form.sellingPrice) < 0) { setFormError('Selling price cannot be negative.'); return; }
-    const clean = { ...form, updatedAt: todayISO() };
+    //const clean = { ...form, updatedAt: todayISO() };
+    const clean = {
+  ...form,
+  ...(title === 'Products' ? { updatedAt: todayISO() } : {}),
+};
     if (title === 'Products') {
       ['purchasePrice', 'sellingPrice', 'quantity', 'reorderLevel'].forEach((key) => { clean[key] = Number(clean[key] || 0); });
       clean.quantity = Math.max(0, clean.quantity);
